@@ -1,10 +1,10 @@
-﻿using Blog.Data.Entities;
+﻿using Blog.Data.Entities.Blog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Blog.Data.Configurations
+namespace Blog.Data.Configurations.Blog
 {
-    public class BlogPostConfigurations : IEntityTypeConfiguration<BlogPostEntity>
+    public class BlogPostEntityConfigurations : IEntityTypeConfiguration<BlogPostEntity>
     {
         public void Configure(EntityTypeBuilder<BlogPostEntity> builder)
         {

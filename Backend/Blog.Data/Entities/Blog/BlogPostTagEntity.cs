@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Data.Entities
+namespace Blog.Data.Entities.Blog
 {
-    public class TagEntity : IGuidEntity, IAuditableEntity
+    public class BlogPostTagEntity : IGuidEntity, IAuditableEntity
     {
         public Guid Id { get; set; }
         
