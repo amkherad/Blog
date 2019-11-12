@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-dotnet ef database update $1 --project Backend/Blog.Data/Blog.Data.csproj --startup-project Blog.Api/Blog.Api.csproj
+dotnet ef database update $1 --project Backend/Blog.Data/Blog.Data.csproj --startup-project Backend/Blog.Api/Blog.Api.csproj
 exit 0;

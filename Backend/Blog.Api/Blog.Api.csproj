@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0-preview2.19525.5" />
       <PackageReference Include="REDTransport.NET.Server.AspNet" Version="1.19.901.42" />
       <PackageReference Include="REDTransport.NET.Server.AspNet.Crud" Version="1.19.901.42" />
       <PackageReference Include="REDTransport.NET.SignalR" Version="1.19.901.42" />
