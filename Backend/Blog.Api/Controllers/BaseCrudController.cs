@@ -9,39 +9,47 @@ namespace Blog.Api.Controllers
     public class BaseCrudController<TQueryModel, TCommandModel, TKey, TEntity, TService> : ControllerBase
     {
         [HttpGet("{id}")]
-        public async Task Get(string id, CancellationToken cancellationToken)
+        public async Task Get([FromRoute] string id, CancellationToken cancellationToken)
         {
-            
         }
-        
+
         [HttpGet]
         public async Task GetAll(CancellationToken cancellationToken)
         {
-            
         }
-        
+
         [HttpPost]
-        public async Task Insert(CancellationToken cancellationToken)
+        public async Task Insert(
+            [FromBody] TCommandModel model,
+            CancellationToken cancellationToken
+        )
         {
-            
         }
-        
+
         [HttpPut("{id}")]
-        public async Task Update(string id, CancellationToken cancellationToken)
+        public async Task Update(
+            [FromRoute] string id,
+            [FromBody] TCommandModel model,
+            CancellationToken cancellationToken
+        )
         {
-            
         }
-        
+
         [HttpPut("{id}")]
-        public async Task UpdatePartial(string id, CancellationToken cancellationToken)
+        public async Task UpdatePartial(
+            [FromRoute] string id,
+            [FromBody] TCommandModel model,
+            CancellationToken cancellationToken
+        )
         {
-            
         }
-        
+
         [HttpDelete("{id}")]
-        public async Task Delete(string id, CancellationToken cancellationToken)
+        public async Task Delete(
+            [FromRoute] string id,
+            CancellationToken cancellationToken
+        )
         {
-            
         }
     }
 }

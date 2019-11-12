@@ -1,4 +1,7 @@
 node_modules/
+app.db-shm
+app.db-wal
+
 
 *.swp
 *.*~
