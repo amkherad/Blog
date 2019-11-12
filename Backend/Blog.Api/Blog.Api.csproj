@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Blog.Data\Blog.Data.csproj" />
+      <ProjectReference Include="..\Blog.Models\Blog.Models.csproj" />
+      <ProjectReference Include="..\Blog.Services\Blog.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="REDTransport.NET.Server.AspNet" Version="1.19.901.42" />
+      <PackageReference Include="REDTransport.NET.Server.AspNet.Crud" Version="1.19.901.42" />
+      <PackageReference Include="REDTransport.NET.SignalR" Version="1.19.901.42" />
+      <PackageReference Include="REDTransport.NET.SignalR.Server" Version="1.19.901.42" />
+    </ItemGroup>
+
+</Project>
