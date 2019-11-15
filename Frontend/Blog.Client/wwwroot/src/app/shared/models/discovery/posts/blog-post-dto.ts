@@ -1,7 +1,7 @@
-import {ResourceReference} from "typings/resource-reference.type";
 import {DateTime} from "typings/date-time.type";
+import {ContentDescriptor} from "typings/content-descriptor";
 
-export class BlogPostDto {
+export interface BlogPostDto {
 
   title: string;
   subtitle: string;
@@ -9,6 +9,6 @@ export class BlogPostDto {
   author: string;
   createdDateTime: DateTime;
 
-  reference: ResourceReference;
+  content: ContentDescriptor;
 
 }

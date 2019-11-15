@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class BlogEnvironmentServiceService {
+export class BlogEnvironmentService {
 
   constructor() {
   }
@@ -30,7 +30,7 @@ export class BlogEnvironmentServiceService {
 
 
   getServiceDiscoveryUri(): string {
-    return "content-discovery.json";
+    return "api/discovery.json";
   }
 
 

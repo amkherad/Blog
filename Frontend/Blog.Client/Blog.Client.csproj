@@ -45,21 +45,27 @@
       <_ContentIncludedByDefault Remove="wwwroot\Blog\src\styles.scss" />
       <_ContentIncludedByDefault Remove="wwwroot\Blog\src\test.ts" />
       <_ContentIncludedByDefault Remove="wwwroot\Blog\package-lock.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.spec.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.ts" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="wwwroot\src\app\core\services\blog-environment" />
       <Folder Include="wwwroot\src\app\core\services\blog-md" />
       <Folder Include="wwwroot\src\app\core\services\content-discovery" />
+      <Folder Include="wwwroot\src\app\components\generals" />
       <Folder Include="wwwroot\src\app\shared\components" />
       <Folder Include="wwwroot\src\app\shared\directives" />
       <Folder Include="wwwroot\src\app\shared\dto\blog" />
       <Folder Include="wwwroot\src\app\shared\models\blog" />
       <Folder Include="wwwroot\src\app\shared\pipes" />
       <Folder Include="wwwroot\src\assets\components" />
-      <Folder Include="wwwroot\src\assets\directory\archive" />
-      <Folder Include="wwwroot\src\assets\directory\pages" />
-      <Folder Include="wwwroot\src\assets\directory\posts" />
       <Folder Include="wwwroot\src\assets\themes" />
+    </ItemGroup>
+    <ItemGroup>
+      <TypeScriptCompile Include="wwwroot\src\app\shared\models\discovery\discovery-model.ts" />
+      <TypeScriptCompile Include="wwwroot\src\app\typings\content-descriptor.ts" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

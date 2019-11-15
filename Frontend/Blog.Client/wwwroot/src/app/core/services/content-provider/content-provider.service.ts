@@ -1,8 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {ContentDiscoveryService} from "../content-discovery/content-discovery.service";
-import {BlogPost} from "shared/models/blog/blog-post";
-import {IRedTransportDriver} from 'REDTransport/dist/IRedTransportDriver';
-import {RedTransportDriver} from 'REDTransport/dist/RedTransportDriver';
+import {BlogPostModel} from "shared/models/blog/blog-post-model";
+import {RestClientService} from "core/services/rest-client/rest-client.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +9,13 @@ import {RedTransportDriver} from 'REDTransport/dist/RedTransportDriver';
 export class ContentProviderService {
 
   private contentDiscoveryService: ContentDiscoveryService;
-  private redTransportDriver: IRedTransportDriver;
+  private restClient: RestClientService;
 
   constructor(
-    @Inject(RedTransportDriver) redTransportDriver: IRedTransportDriver,
+    @Inject(RestClientService) restClient: RestClientService,
     @Inject(ContentDiscoveryService) contentDiscoveryService: ContentDiscoveryService
   ) {
-    this.redTransportDriver = redTransportDriver;
+    this.restClient = restClient;
     this.contentDiscoveryService = contentDiscoveryService;
   }
 
@@ -58,9 +57,9 @@ export class ContentProviderService {
 
   }
 
-  async getPost(uri: string, queries?: Record<string, string>): Promise<BlogPost> {
+  async getPost(uri: string, queries?: Record<string, string>): Promise<BlogPostModel> {
 
-    const response = await this.redTransportDriver.get<Response>({
+    const response = await this.restClient.get<Response>({
       url: '',
     });
 
@@ -78,6 +77,6 @@ export class ContentProviderService {
       author: 'test',
       createdDateTime: 'test',
       htmlContent: 'test',
-    } as BlogPost);
+    } as BlogPostModel);
   }
 }
