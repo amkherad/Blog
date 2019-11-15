@@ -1,0 +1,20 @@
+{
+  "totalPosts": 1,
+  "contentRoot": "~/directory/posts",
+  "posts": {
+    "2019-02-02_00042995-9e37-4dce-9ea8-71072c2ddb73": {
+      "loader": "text/markdown+rich",
+      "arguments": [
+        ""
+      ],
+      "reference": "~/2019-02-02_00042995-9e37-4dce-9ea8-71072c2ddb73.md",
+      "createdDateTime": "2019-02-02 04:05:06 PM",
+      "author": "Test",
+      "title": "Test",
+      "subtitle": "Test",
+      "brief": "Test",
+      "readMore": true,
+      "comments": true
+    }
+  }
+}

@@ -44,6 +44,22 @@
       <_ContentIncludedByDefault Remove="wwwroot\Blog\src\polyfills.ts" />
       <_ContentIncludedByDefault Remove="wwwroot\Blog\src\styles.scss" />
       <_ContentIncludedByDefault Remove="wwwroot\Blog\src\test.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\Blog\package-lock.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="wwwroot\src\app\core\services\blog-environment" />
+      <Folder Include="wwwroot\src\app\core\services\blog-md" />
+      <Folder Include="wwwroot\src\app\core\services\content-discovery" />
+      <Folder Include="wwwroot\src\app\shared\components" />
+      <Folder Include="wwwroot\src\app\shared\directives" />
+      <Folder Include="wwwroot\src\app\shared\dto\blog" />
+      <Folder Include="wwwroot\src\app\shared\models\blog" />
+      <Folder Include="wwwroot\src\app\shared\pipes" />
+      <Folder Include="wwwroot\src\assets\components" />
+      <Folder Include="wwwroot\src\assets\directory\archive" />
+      <Folder Include="wwwroot\src\assets\directory\pages" />
+      <Folder Include="wwwroot\src\assets\directory\posts" />
+      <Folder Include="wwwroot\src\assets\themes" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
