@@ -1,6 +1,6 @@
 {
   "totalPosts": 1,
-  "contentRoot": "~/directory/posts",
+  "contentRoot": "~/api/posts/items",
   "posts": {
     "2019-02-02_00042995-9e37-4dce-9ea8-71072c2ddb73": {
       "loader": "text/markdown+rich",

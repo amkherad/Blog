@@ -1,4 +1,4 @@
-import {ArchiveDiscoveryModel} from "shared/models/discovery/archive/archive-discovery-model";
+import {ArchivesDiscoveryModel} from "shared/models/discovery/archives/archives-discovery-model";
 import {PagesDiscoveryModel} from "shared/models/discovery/pages/pages-discovery-model";
 import {PostsDiscoveryModel} from "shared/models/discovery/posts/posts-discovery-model";
 import {ResourceReference} from "typings/resource-reference.type";
@@ -13,7 +13,7 @@ export interface BlogDiscoveryModel {
   blogSubtitle: string;
   blogDescription: string;
 
-  archives: ArchiveDiscoveryModel | ResourceReference | undefined;
+  archives: ArchivesDiscoveryModel | ResourceReference | undefined;
   pages: PagesDiscoveryModel | ResourceReference | undefined;
   posts: PostsDiscoveryModel | ResourceReference | undefined;
 

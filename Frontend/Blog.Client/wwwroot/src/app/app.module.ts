@@ -12,13 +12,16 @@ import {ContentDiscoveryService} from "core/services/content-discovery/content-d
 import { BlogPostPageComponent } from 'components/blog-post-page/blog-post-page.component';
 import { SearchPageComponent } from 'components/search-page/search-page.component';
 import { BlogArchiveComponent } from 'components/blog-archive/blog-archive.component';
+import {BlogPostListComponent} from "shared/components/blog-post-list/blog-post-list.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     BlogPostPageComponent,
     SearchPageComponent,
-    BlogArchiveComponent
+    BlogArchiveComponent,
+    BlogPostListComponent,
+    BlogPostListComponent
   ],
   imports: [
     BrowserModule,

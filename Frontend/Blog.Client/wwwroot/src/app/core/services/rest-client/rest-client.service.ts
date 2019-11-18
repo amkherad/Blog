@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IRedTransportDriver } from 'REDTransport/dist/IRedTransportDriver';
-import { RedTransportDriver } from 'REDTransport/dist/RedTransportDriver';
+import { IRedTransportDriver } from 'redtransport/dist/IRedTransportDriver';
+import { RedTransportDriver } from 'redtransport/dist/RedTransportDriver';
 
 @Injectable({
   providedIn: 'root'

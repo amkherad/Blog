@@ -51,6 +51,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.ts" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="wwwroot\src\api\archives\items" />
+      <Folder Include="wwwroot\src\api\pages\items" />
       <Folder Include="wwwroot\src\app\core\services\blog-environment" />
       <Folder Include="wwwroot\src\app\core\services\blog-md" />
       <Folder Include="wwwroot\src\app\core\services\content-discovery" />

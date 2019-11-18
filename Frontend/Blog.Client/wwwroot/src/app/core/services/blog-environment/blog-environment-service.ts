@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {urljoin} from 'url-join';
 
 @Injectable({
   providedIn: 'root'
@@ -34,15 +35,34 @@ export class BlogEnvironmentService {
   }
 
 
-  getPostsUri(): string {
-    return "";
+  getPostsDiscoveryUri(): string {
+    return "api/posts/discovery.json";
   }
 
-  getPagesUri(): string {
-    return "";
+  getPagesDiscoveryUri(): string {
+    return "api/pages/discovery.json";
   }
 
-  getArchive(): string {
-    return "";
+  getArchivesDiscoveryUri(): string {
+    return "api/archives/discovery.json";
+  }
+
+  normalizePath(path: string, sectionRoot?: string) {
+
+    let root;
+
+    if (sectionRoot) {
+      root = sectionRoot.replace('~', '');
+    } else {
+      root = '';
+    }
+
+    if (path.includes('~')) {
+      path = path.replace('~', root);
+    } else {
+      path = urljoin(root, path);
+    }
+
+    return path;
   }
 }

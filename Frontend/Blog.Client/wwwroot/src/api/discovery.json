@@ -6,11 +6,13 @@
   "blogSubtitle": "",
   "posts": [
     {
+      "id": "test",
       "loader": "text/markdown+rich",
       "arguments": [
         ""
       ],
-      "reference": "~/"
+      "reference": "~/test",
+      "title": "test"
     }
   ],
   "archive": [

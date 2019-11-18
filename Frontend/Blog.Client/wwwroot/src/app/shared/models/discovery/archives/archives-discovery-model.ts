@@ -1,6 +1,6 @@
 import {DiscoveryModel} from "shared/models/discovery/discovery-model";
 
-export interface ArchiveDiscoveryModel extends DiscoveryModel {
+export interface ArchivesDiscoveryModel extends DiscoveryModel {
 
   archives: [];
 

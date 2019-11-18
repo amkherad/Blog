@@ -1,0 +1,10 @@
+<div>
+  <div *ngFor="let post of posts">
+    <div>{{post.title}}</div>
+    <div>{{post.subtitle}}</div>
+    <div>{{post.author}} | {{post.createdDateTime}}</div>
+    <div>
+      {{post.htmlContent}}
+    </div>
+  </div>
+</div>

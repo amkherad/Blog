@@ -23,6 +23,12 @@
         "src/*",
         "src/app/*",
         "node_modules/*"
+      ],
+      "test": [
+        "dist/test"
+      ],
+      "test/*": [
+        "dist/test/*"
       ]
     }
   },

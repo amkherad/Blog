@@ -3,6 +3,8 @@ import {ContentDescriptor} from "typings/content-descriptor";
 
 export interface BlogPostDto {
 
+  id: string;
+
   title: string;
   subtitle: string;
   brief?: string;
