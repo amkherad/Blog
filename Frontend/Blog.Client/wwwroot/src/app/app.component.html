@@ -1,12 +1,16 @@
+<div class="blog-wrapper">
 
-{{title}}
+  <header class="blog-header">
+    {{title}}
+  </header>
 
-<div>
-  <app-blog-post-list
-    [posts]="posts"
-  >
-  </app-blog-post-list>
+  <div class="blog-body">
+    <router-outlet></router-outlet>
+  </div>
+
+  <footer class="blog-footer">
+    (C) Copyright 2019 Ali Mousavi Kherad<br/>
+    Powered by <a href="https://github.com/amkherad/Blog" target="_blank">Blog (A fat-client blog management system)</a>
+  </footer>
+
 </div>
-
-
-<router-outlet></router-outlet>

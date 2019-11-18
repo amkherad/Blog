@@ -9,6 +9,7 @@ import {ApiSchemaBlogDiscovery} from "shared/models/api-schemas/api-schema-blog-
 import {ApiSchemaPostsDiscovery} from "shared/models/api-schemas/api-schema-posts-discovery";
 import {ApiSchemaPagesDiscovery} from "shared/models/api-schemas/api-schema-pages-discovery";
 import {ApiSchemaArchivesDiscovery} from "shared/models/api-schemas/api-schema-archives-discovery";
+import {ResourceReferenceExtended} from "typings/resource-reference.type";
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +35,12 @@ export class ContentDiscoveryService {
       return ContentDiscoveryService.blogDiscovery;
     }
 
-    const rootDiscovery = this.blogEnvironment.getServiceDiscoveryUri();
+    let discoveryUrl = this.blogEnvironment.getServiceDiscoveryUri();
+
+    discoveryUrl = this.blogEnvironment.normalizePath(discoveryUrl, 'api');
 
     const discovery = await this.restClient.apiCall(
-      new ApiSchemaBlogDiscovery(rootDiscovery)
+      new ApiSchemaBlogDiscovery(discoveryUrl)
     );
 
     ContentDiscoveryService.blogDiscovery = discovery;
@@ -49,7 +52,29 @@ export class ContentDiscoveryService {
 
     const blogInfo = await this.getBlogInformation();
 
-    const discoveryUrl = this.blogEnvironment.getServiceDiscoveryUri();
+    let discoveryUrl;
+    let discoveryHash: string | undefined = undefined;
+
+    if (blogInfo.posts) {
+      const posts = blogInfo.posts;
+
+      if (typeof posts === 'object') {
+        if (typeof (posts as ResourceReferenceExtended).uri === 'string') {
+          discoveryUrl = (posts as ResourceReferenceExtended).uri;
+          discoveryHash = (posts as ResourceReferenceExtended).hash;
+        } else if (typeof (posts as PostsDiscoveryModel).posts === 'object') {
+          return (posts as PostsDiscoveryModel);
+        } else {
+          discoveryUrl = this.blogEnvironment.getPostsDiscoveryUri();
+        }
+      } else if (typeof posts === 'string') {
+        discoveryUrl = posts;
+      }
+    } else {
+      discoveryUrl = this.blogEnvironment.getPostsDiscoveryUri();
+    }
+
+    discoveryUrl = this.blogEnvironment.normalizePath(discoveryUrl, 'api');
 
     const result = await this.restClient.apiCall(
       new ApiSchemaPostsDiscovery(
@@ -66,7 +91,7 @@ export class ContentDiscoveryService {
 
     const blogInfo = await this.getBlogInformation();
 
-    const discoveryUrl = this.blogEnvironment.getServiceDiscoveryUri();
+    const discoveryUrl = this.blogEnvironment.getPagesDiscoveryUri();
 
     const result = await this.restClient.apiCall(
       new ApiSchemaPostsDiscovery(
@@ -83,7 +108,7 @@ export class ContentDiscoveryService {
 
     const blogInfo = await this.getBlogInformation();
 
-    const discoveryUrl = this.blogEnvironment.getServiceDiscoveryUri();
+    const discoveryUrl = this.blogEnvironment.getArchivesDiscoveryUri();
 
     const result = await this.restClient.apiCall(
       new ApiSchemaPostsDiscovery(

@@ -73,26 +73,26 @@ export class ContentProviderService {
 
     const transformedPosts: BlogPostModel[] = [];
     if (postsInfo && postsInfo.posts) {
-      for (const post of postsInfo.posts) {
+      for (const postKey in postsInfo.posts) {
+        if (postsInfo.posts.hasOwnProperty(postKey)) {
 
-        let result = {
-          title: post.title,
-          subtitle: post.subtitle,
-          createdDateTime: post.createdDateTime,
-          author: post.author,
-          htmlContent: post.brief
-        } as BlogPostModel;
+          const post = postsInfo.posts[postKey];
 
-        if (loadContent || typeof post.brief === 'undefined') {
-          try {
-            console.log(post);
-            result = await this.getPost(post);
-          } catch (ex) {
-            console.error(':: An error occured while trying to fetch post data:', ex);
+          let result = {
+            ...post,
+            htmlContent: post.brief
+          } as BlogPostModel;
+
+          if (loadContent || typeof post.brief === 'undefined') {
+            try {
+              result = await this.getPost(post);
+            } catch (ex) {
+              console.error(':: An error occured while trying to fetch post data:', ex);
+            }
           }
-        }
 
-        transformedPosts.push(result);
+          transformedPosts.push(result);
+        }
       }
     }
 

@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ContentDiscoveryService} from "core/services/content-discovery/content-discovery.service";
-import {BlogPostModel} from "shared/models/blog/blog-post-model";
 import {ContentProviderService} from "core/services/content-provider/content-provider.service";
 
 @Component({
@@ -20,8 +19,6 @@ export class AppComponent implements OnInit {
   subtitle: string;
   description: string;
 
-  posts: BlogPostModel[];
-
 
   constructor(
     contentDiscovery: ContentDiscoveryService,
@@ -36,8 +33,6 @@ export class AppComponent implements OnInit {
 
     const blogInfo = await this.contentDiscovery.getBlogInformation();
 
-    const posts = await this.contentProvider.getPosts(false);
-
     this.applicationId = blogInfo.applicationId;
     this.uniqueIdentifier = blogInfo.uniqueIdentifier;
     this.domain = blogInfo.domain;
@@ -45,8 +40,5 @@ export class AppComponent implements OnInit {
     this.title = blogInfo.blogTitle;
     this.subtitle = blogInfo.blogSubtitle;
     this.description = blogInfo.blogDescription;
-
-    this.posts = posts;
-
   }
 }

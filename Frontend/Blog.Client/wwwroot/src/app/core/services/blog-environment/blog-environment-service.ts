@@ -9,12 +9,12 @@ export class BlogEnvironmentService {
   constructor() {
   }
 
-  isServer(): boolean {
+  public isServer(): boolean {
 
     return false;
   }
 
-  getVariable(key: string, defaultValue?: any): string | undefined {
+  public getVariable(key: string, defaultValue?: any): string | undefined {
 
     if (!this.isServer()) {
       return localStorage.getItem(key) || defaultValue;
@@ -23,31 +23,31 @@ export class BlogEnvironmentService {
     return defaultValue;
   }
 
-  setVariable(key: string, value: any): void {
+  public setVariable(key: string, value: any): void {
     if (!this.isServer()) {
       localStorage.setItem(key, value);
     }
   }
 
 
-  getServiceDiscoveryUri(): string {
-    return "api/discovery.json";
+  public getServiceDiscoveryUri(): string {
+    return "~/discovery.json";
   }
 
 
-  getPostsDiscoveryUri(): string {
-    return "api/posts/discovery.json";
+  public getPostsDiscoveryUri(): string {
+    return "~/posts/discovery.json";
   }
 
-  getPagesDiscoveryUri(): string {
-    return "api/pages/discovery.json";
+  public getPagesDiscoveryUri(): string {
+    return "~/pages/discovery.json";
   }
 
-  getArchivesDiscoveryUri(): string {
-    return "api/archives/discovery.json";
+  public getArchivesDiscoveryUri(): string {
+    return "~/archives/discovery.json";
   }
 
-  normalizePath(path: string, sectionRoot?: string) {
+  public normalizePath(path: string, sectionRoot?: string) {
 
     let root;
 
@@ -60,7 +60,7 @@ export class BlogEnvironmentService {
     if (path.includes('~')) {
       path = path.replace('~', root);
     } else {
-      path = urljoin(root, path);
+      path = root + '/' + path;
     }
 
     return path;

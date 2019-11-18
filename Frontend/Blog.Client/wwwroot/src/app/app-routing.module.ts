@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {BlogPostPageComponent} from "components/blog-post-page/blog-post-page.component";
 import {SearchPageComponent} from "components/search-page/search-page.component";
 import {BlogArchiveComponent} from "components/blog-archive/blog-archive.component";
+import {BlogHomePageComponent} from "components/blog-home-page/blog-home-page.component";
 
 
 const routes: Routes = [
@@ -29,6 +30,10 @@ const routes: Routes = [
         ]
       }
     ]
+  },
+  {
+    path: '',
+    component: BlogHomePageComponent
   }
 ];
 
