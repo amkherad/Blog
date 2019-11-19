@@ -6,11 +6,16 @@ export interface BlogPostModel {
 
   title: string;
   subtitle: string;
+  brief?: string;
   author: string;
   createdDateTime: DateTime;
 
-  brief?: string;
+  readMore: boolean;
 
   htmlContent: string;
 
 }
+
+export const isBlogPostModel = (post: any): post is BlogPostModel => {
+  return (post as BlogPostModel).createdDateTime !== 'undefined';
+};

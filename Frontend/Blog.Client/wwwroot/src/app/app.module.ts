@@ -14,7 +14,8 @@ import {SearchPageComponent} from 'components/search-page/search-page.component'
 import {BlogArchiveComponent} from 'components/blog-archive/blog-archive.component';
 import {BlogPostListComponent} from "shared/components/blog-post-list/blog-post-list.component";
 import {BlogNameGeneratorService} from "core/services/blog-name-generator/blog-name-generator.service";
-import { BlogHomePageComponent } from './components/blog-home-page/blog-home-page.component';
+import {BlogHomePageComponent} from 'components/blog-home-page/blog-home-page.component';
+import {IRestClientService} from "core/services/rest-client/irest-client.service";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,10 @@ import { BlogHomePageComponent } from './components/blog-home-page/blog-home-pag
     AppRoutingModule
   ],
   providers: [
-    RestClientService,
+    {
+      provide: 'IRestClientService',
+      useClass: RestClientService
+    },
     BlogEnvironmentService,
     ContentProviderService,
     ContentDiscoveryService,

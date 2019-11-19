@@ -1,6 +1,6 @@
 {
   "totalPosts": 1,
-  "contentRoot": "~/api/posts/items",
+  "lookupRootDirectory": "~/api/posts/items",
   "posts": {
     "lakjg3lhjb00alk3": {
       "id": "lakjg3lhjb00alk3",
@@ -10,7 +10,7 @@
           ""
         ]
       },
-      "reference": "~/lakjg3lhjb00alk3/content.md",
+      "content": "~/2019-11-18_12-05-00_test/content.md",
       "createdDateTime": "2019-11-18 05:00:00 PM",
       "author": "Ali Mousavi Kherad",
       "title": "My First Post",

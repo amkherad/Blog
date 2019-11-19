@@ -49,6 +49,20 @@
       <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.scss" />
       <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.spec.ts" />
       <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\karma.conf.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\ng-package.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\package.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\e2e.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.component.spec.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.component.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.module.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.service.spec.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.service.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\test.ts" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\tsconfig.lib.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\tsconfig.spec.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\projects\test\tslint.json" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="wwwroot\src\api\archives\items" />

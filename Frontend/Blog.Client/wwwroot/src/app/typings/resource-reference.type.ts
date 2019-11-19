@@ -8,3 +8,7 @@ export type ResourceReferenceExtended = {
 };
 
 export type ResourceReference = string | ResourceReferenceExtended;
+
+export const isResourceReferenceExtended = (obj: any): obj is ResourceReferenceExtended => {
+  return typeof (obj as ResourceReferenceExtended).uri !== 'undefined';
+};

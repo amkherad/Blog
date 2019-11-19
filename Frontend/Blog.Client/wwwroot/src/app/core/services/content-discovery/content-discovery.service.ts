@@ -7,9 +7,8 @@ import {PagesDiscoveryModel} from "shared/models/discovery/pages/pages-discovery
 import {ArchivesDiscoveryModel} from "shared/models/discovery/archives/archives-discovery-model";
 import {ApiSchemaBlogDiscovery} from "shared/models/api-schemas/api-schema-blog-discovery";
 import {ApiSchemaPostsDiscovery} from "shared/models/api-schemas/api-schema-posts-discovery";
-import {ApiSchemaPagesDiscovery} from "shared/models/api-schemas/api-schema-pages-discovery";
-import {ApiSchemaArchivesDiscovery} from "shared/models/api-schemas/api-schema-archives-discovery";
 import {ResourceReferenceExtended} from "typings/resource-reference.type";
+import {DiscoveryFilter} from "shared/models/discovery/discovery-filter";
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +47,7 @@ export class ContentDiscoveryService {
     return discovery;
   }
 
-  async getPostsDiscoveryInfo(): Promise<PostsDiscoveryModel> {
+  async getPostsDiscoveryInfo(filter?: DiscoveryFilter<PostsDiscoveryModel>): Promise<PostsDiscoveryModel> {
 
     const blogInfo = await this.getBlogInformation();
 
@@ -81,13 +80,16 @@ export class ContentDiscoveryService {
         discoveryUrl,
         blogInfo.applicationId,
         blogInfo.uniqueIdentifier
-      )
+      ),
+      {
+        query: filter
+      }
     );
 
     return result;
   }
 
-  async getPagesDiscoveryInfo(): Promise<PagesDiscoveryModel> {
+  async getPagesDiscoveryInfo(filter?: DiscoveryFilter<PagesDiscoveryModel>): Promise<PagesDiscoveryModel> {
 
     const blogInfo = await this.getBlogInformation();
 
@@ -98,13 +100,16 @@ export class ContentDiscoveryService {
         discoveryUrl,
         blogInfo.applicationId,
         blogInfo.uniqueIdentifier
-      )
+      ),
+      {
+        query: filter
+      }
     );
 
     return result;
   }
 
-  async getArchivesDiscoveryInfo(): Promise<ArchivesDiscoveryModel> {
+  async getArchivesDiscoveryInfo(filter?: DiscoveryFilter<ArchivesDiscoveryModel>): Promise<ArchivesDiscoveryModel> {
 
     const blogInfo = await this.getBlogInformation();
 
@@ -115,7 +120,10 @@ export class ContentDiscoveryService {
         discoveryUrl,
         blogInfo.applicationId,
         blogInfo.uniqueIdentifier
-      )
+      ),
+      {
+        query: filter
+      }
     );
 
     return result;
