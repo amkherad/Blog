@@ -67,15 +67,16 @@
     <ItemGroup>
       <Folder Include="wwwroot\src\api\archives\items" />
       <Folder Include="wwwroot\src\api\pages\items" />
+      <Folder Include="wwwroot\src\app\core\pipes" />
       <Folder Include="wwwroot\src\app\core\services\blog-environment" />
-      <Folder Include="wwwroot\src\app\core\services\blog-md" />
+      <Folder Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\codegen" />
+      <Folder Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\parser" />
       <Folder Include="wwwroot\src\app\core\services\content-discovery" />
       <Folder Include="wwwroot\src\app\components\generals" />
       <Folder Include="wwwroot\src\app\shared\components" />
       <Folder Include="wwwroot\src\app\shared\directives" />
       <Folder Include="wwwroot\src\app\shared\dto\blog" />
       <Folder Include="wwwroot\src\app\shared\models\blog" />
-      <Folder Include="wwwroot\src\app\shared\pipes" />
       <Folder Include="wwwroot\src\assets\components" />
       <Folder Include="wwwroot\src\assets\themes" />
     </ItemGroup>

@@ -17,6 +17,7 @@ import {isResourceReferenceExtended} from "typings/resource-reference.type";
 import {BlogDiscoveryModel} from "shared/models/discovery/blog/blog-discovery-model";
 import {PostsDiscoveryModel} from "shared/models/discovery/posts/posts-discovery-model";
 import {BlogPostDto, isBlogPostDto} from "shared/models/blog/blog-post-dto";
+import {BlogMarkdownTransformService} from "core/services/blog-markdown-transform/blog-markdown-transform.service";
 
 
 @Injectable({
@@ -29,22 +30,25 @@ export class ContentProviderService {
   private restClientService: RestClientService;
   private dateTimeService: DateTimeService;
   private blogNameGeneratorService: BlogNameGeneratorService;
+  private blogMarkdownTransformService: BlogMarkdownTransformService;
 
   constructor(
     restClient: RestClientService,
     blogEnvironmentService: BlogEnvironmentService,
     contentDiscoveryService: ContentDiscoveryService,
     dateTimeService: DateTimeService,
-    blogNameGeneratorService: BlogNameGeneratorService
+    blogNameGeneratorService: BlogNameGeneratorService,
+    blogMarkdownTransformService: BlogMarkdownTransformService
   ) {
     this.restClientService = restClient;
     this.blogEnvironmentService = blogEnvironmentService;
     this.contentDiscoveryService = contentDiscoveryService;
     this.dateTimeService = dateTimeService;
     this.blogNameGeneratorService = blogNameGeneratorService;
+    this.blogMarkdownTransformService = blogMarkdownTransformService;
   }
 
-  async transformResponse(contentType: string, content: string): Promise<string> {
+  async transformResponse(contentType: string, content: string | Response): Promise<string> {
 
     let contentTypeStr = contentType.toString();
 
@@ -59,28 +63,66 @@ export class ContentProviderService {
       }
       case 'text/json':
       case 'application/json': {
+        if (typeof content === 'object' && content instanceof Response) {
 
+        } else if (typeof content === 'string') {
+
+        }
         break;
       }
       case 'text/html':
       case 'text/xhtml':
       case 'text/x-html': {
+        if (typeof content === 'object' && content instanceof Response) {
 
+        } else if (typeof content === 'string') {
+
+        }
         break;
       }
       case 'text/xml':
       case 'application/xml': {
+        if (typeof content === 'object' && content instanceof Response) {
 
+        } else if (typeof content === 'string') {
+
+        }
         break;
       }
       case 'text/markdown':
       case 'text/blog-markdown':
       case 'text/markdown+extended': {
 
-        break;
+        let response: Response;
+
+        if (typeof content === 'object' && content instanceof Response) {
+          response = content;
+        } else if (typeof content === 'string') {
+          response = new Response(content);
+        } else {
+          throw new Error('Invalid type of content passed to ContentProviderService.transformResponse().');
+        }
+
+        const transformStream = this.blogMarkdownTransformService.transform(response);
+        const reader = transformStream.getReader();
+
+        let buffer = '';
+
+        const block = await reader.read();
+        while (!block.done) {
+          buffer += block.value;
+        }
+
+        return buffer;
       }
       default: {
-        return content;
+        if (typeof content === 'object' && content instanceof Response) {
+          return await content.text();
+        } else if (typeof content === 'string') {
+          return content;
+        } else {
+          throw new Error('Invalid type of content passed to ContentProviderService.transformResponse().');
+        }
       }
     }
   }

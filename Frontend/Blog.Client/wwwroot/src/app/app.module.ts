@@ -16,6 +16,7 @@ import {BlogPostListComponent} from "shared/components/blog-post-list/blog-post-
 import {BlogNameGeneratorService} from "core/services/blog-name-generator/blog-name-generator.service";
 import {BlogHomePageComponent} from 'components/blog-home-page/blog-home-page.component';
 import {IRestClientService} from "core/services/rest-client/irest-client.service";
+import { BlogMarkdownPipe } from './core/pipes/blog-markdown.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {IRestClientService} from "core/services/rest-client/irest-client.service
     BlogArchiveComponent,
     BlogPostListComponent,
     BlogPostListComponent,
-    BlogHomePageComponent
+    BlogHomePageComponent,
+    BlogMarkdownPipe
   ],
   imports: [
     BrowserModule,
