@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ContentDiscoveryService} from "core/services/content-discovery/content-discovery.service";
+import {ContentProviderService} from "core/services/content-provider/content-provider.service";
 
 @Component({
   selector: 'app-root',
@@ -9,15 +10,22 @@ import {ContentDiscoveryService} from "core/services/content-discovery/content-d
 export class AppComponent implements OnInit {
 
   private contentDiscovery: ContentDiscoveryService;
+  private contentProvider: ContentProviderService;
 
-
-  private title: string;
+  applicationId: string;
+  uniqueIdentifier: string;
+  domain: string;
+  title: string;
+  subtitle: string;
+  description: string;
 
 
   constructor(
-    contentDiscovery: ContentDiscoveryService
+    contentDiscovery: ContentDiscoveryService,
+    contentProvider: ContentProviderService
   ) {
     this.contentDiscovery = contentDiscovery;
+    this.contentProvider = contentProvider;
   }
 
 
@@ -25,7 +33,12 @@ export class AppComponent implements OnInit {
 
     const blogInfo = await this.contentDiscovery.getBlogInformation();
 
-    this.title = blogInfo.blogTitle;
+    this.applicationId = blogInfo.applicationId;
+    this.uniqueIdentifier = blogInfo.uniqueIdentifier;
+    this.domain = blogInfo.domain;
 
+    this.title = blogInfo.blogTitle;
+    this.subtitle = blogInfo.blogSubtitle;
+    this.description = blogInfo.blogDescription;
   }
 }

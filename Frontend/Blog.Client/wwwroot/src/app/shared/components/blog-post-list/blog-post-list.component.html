@@ -1,0 +1,16 @@
+<div class="list-posts">
+  <div *ngFor="let post of posts">
+    <div class="list-posts-header">
+      <div class="title">{{post.title}}</div>
+      <div class="subtitle">{{post.subtitle}}</div>
+      <div class="author">{{post.author}}</div>
+      <div class="createdDateTime">{{post.createdDateTime}}</div>
+    </div>
+    <div class="list-posts-body">
+      {{post.brief}}
+    </div>
+    <div class="list-posts-footer">
+      <a href="{{getLink(post)}}">Continue...</a>
+    </div>
+  </div>
+</div>
