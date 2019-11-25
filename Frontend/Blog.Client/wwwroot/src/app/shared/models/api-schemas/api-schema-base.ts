@@ -1,12 +1,12 @@
 import {RedTransportRestSchema} from "redtransport/dist/RedTransportRestSchema";
 import {HttpRequestMethod} from "redtransport/dist/HttpRequestMethod";
 
-export class ApiSchemaBase<TModel> implements RedTransportRestSchema<TModel> {
+export class ApiSchemaBase<TInputModel, TOutputModel> implements RedTransportRestSchema<TInputModel, TOutputModel> {
   method: HttpRequestMethod;
   uri: string;
-  defaultQueries?: Record<string, any> | TModel;
-  defaultValues?: Record<string, any> | TModel;
-  transformer?: (response: Response) => (PromiseLike<TModel> | TModel);
+  defaultQueries?: Record<string, any> | TInputModel;
+  defaultValues?: Record<string, any> | TInputModel;
+  transformer?: (response: Response) => (PromiseLike<TOutputModel> | TOutputModel);
 
   constructor(uri: string, applicationId?: string, uniqueIdentifier?: string, method?: HttpRequestMethod) {
     this.uri = uri;

@@ -52,8 +52,9 @@
       <_ContentIncludedByDefault Remove="wwwroot\src\api\posts\items\2019-11-18_12-05-00_test\content.md" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="wwwroot\node_modules\@types" />
       <Folder Include="wwwroot\src\app\core\services\blog-environment" />
-      <Folder Include="wwwroot\src\app\core\services\blog-md" />
+      <Folder Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\formatters" />
       <Folder Include="wwwroot\src\app\core\services\content-discovery" />
       <Folder Include="wwwroot\src\app\components\generals" />
       <Folder Include="wwwroot\src\app\core\services\generals" />
@@ -65,6 +66,8 @@
       <Folder Include="wwwroot\src\assets\themes" />
     </ItemGroup>
     <ItemGroup>
+      <TypeScriptCompile Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\library\pipeline-string-line-reader.ts" />
+      <TypeScriptCompile Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\library\transform-pipeline-buffer.ts" />
       <TypeScriptCompile Include="wwwroot\src\app\core\services\rest-client\irest-client.service.ts" />
       <TypeScriptCompile Include="wwwroot\src\app\shared\models\discovery\discovery-model.ts" />
       <TypeScriptCompile Include="wwwroot\src\app\typings\content-descriptor.ts" />
