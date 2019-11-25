@@ -129,9 +129,15 @@ export class BlogMarkdownParser {
     const current = cursor.current;
 
     for(;;) {
+      const index = current + offset;
+
+      if (cursor.source[index] == '\n' || cursor.source[index] == '\r') {
+        break;
+      }
+
       if (offset + 1 >= readLimit || (
-        cursor.source[current + offset] === ' ' &&
-        cursor.source[current + offset + 1] === ' '
+        cursor.source[index] === ' ' &&
+        cursor.source[index + 1] === ' '
       )) {
         break;
       }
@@ -168,7 +174,6 @@ export class BlogMarkdownParser {
           break;
         }
         default: {
-          console.log('default');
           yield this.readChar(cursor, request);
           break;
         }
@@ -178,9 +183,12 @@ export class BlogMarkdownParser {
         break;
       }
     }
-
   }
 
+  private readPairComponents(cursor: Cursor, request: TokenRequest, pairChar: string): string {
+
+    return '';
+  }
 
   private readHeader(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
 
