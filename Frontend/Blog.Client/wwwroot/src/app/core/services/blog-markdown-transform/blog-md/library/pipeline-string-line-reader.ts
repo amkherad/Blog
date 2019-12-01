@@ -1,5 +1,4 @@
 ﻿import {TransformPipelineBuffer} from "./transform-pipeline-buffer";
-import {TokenInfo} from "core/services/blog-markdown-transform/blog-md/parser/token-info";
 
 export class PipelineStringLineReader {
 
@@ -28,15 +27,10 @@ export class PipelineStringLineReader {
         }
       }
 
-      this.transformLine(buffer, '');
+      //this.transformLine(buffer, '');
 
       block = await reader.read();
     }
     reader.releaseLock();
-  }
-
-
-  transformLine(pushToken: PushTokenCallback, line: string): void {
-
   }
 }

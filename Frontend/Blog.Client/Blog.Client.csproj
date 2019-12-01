@@ -54,7 +54,6 @@
     <ItemGroup>
       <Folder Include="wwwroot\node_modules\@types" />
       <Folder Include="wwwroot\src\app\core\services\blog-environment" />
-      <Folder Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\formatters" />
       <Folder Include="wwwroot\src\app\core\services\content-discovery" />
       <Folder Include="wwwroot\src\app\components\generals" />
       <Folder Include="wwwroot\src\app\core\services\generals" />

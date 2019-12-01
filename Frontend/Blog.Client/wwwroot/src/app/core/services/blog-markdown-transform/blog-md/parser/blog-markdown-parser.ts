@@ -1,5 +1,6 @@
 import {FormatParameters} from "core/services/blog-markdown-transform/blog-md/parser/format-parameters";
 import {HeaderFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/header-formatter";
+import {CodeFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/code-formatter";
 
 type Cursor = {
   source: string;
@@ -22,6 +23,17 @@ const SharpsPattern: RegExp = new RegExp("^#+");
 
 export class BlogMarkdownParser {
 
+  private readonly format: FormatParameters;
+
+  constructor() {
+    this.format = {
+
+      headerFormatter: new HeaderFormatter(),
+      codeFormatter: new CodeFormatter(),
+
+    } as FormatParameters;
+  }
+
   transform(input: string): string {
 
     let output = '';
@@ -41,19 +53,18 @@ export class BlogMarkdownParser {
 
     } as TokenRequest;
 
-    const format = {
-
-      headerFormatter: new HeaderFormatter()
-
-    } as FormatParameters;
-
-    const iterator = this.parse(cursor, request, format);
+    const iterator = this.parse(cursor, request, this.format);
 
     for (const block of iterator) {
       output += block;
     }
 
     return output;
+  }
+
+  private subParse(str: string, parent: string) : string {
+
+    return this.transform(str);
   }
 
   isEof(cursor: Cursor): boolean {
@@ -131,7 +142,7 @@ export class BlogMarkdownParser {
     for(;;) {
       const index = current + offset;
 
-      if (cursor.source[index] == '\n' || cursor.source[index] == '\r') {
+      if (cursor.source[index] == "\n" || cursor.source[index] == "\r") {
         break;
       }
 
@@ -144,6 +155,8 @@ export class BlogMarkdownParser {
 
       offset ++;
     }
+
+    console.log('offset|source|sourceLnegth', offset, cursor.source, cursor.highestIndex);
 
     return offset;
   }
@@ -161,18 +174,18 @@ export class BlogMarkdownParser {
           yield this.readHeader(cursor, request, format);
           break;
         }
-        case '*': {
-          yield this.readList(cursor, request, format);
-          break;
-        }
-        case '-': {
-          yield this.readList(cursor, request, format);
-          break;
-        }
         case '`': {
           yield this.readBacktick(cursor, request, format);
           break;
         }
+        // case '-': {
+        //   yield this.readList(cursor, request, format);
+        //   break;
+        // }
+        // case '`': {
+        //   yield this.readBacktick(cursor, request, format);
+        //   break;
+        // }
         default: {
           yield this.readChar(cursor, request);
           break;
@@ -185,7 +198,7 @@ export class BlogMarkdownParser {
     }
   }
 
-  private readPairComponents(cursor: Cursor, request: TokenRequest, pairChar: string): string {
+  private readPairComponents(cursor: Cursor, request: TokenRequest, pairChar: string, breakOnNewLine: boolean): string {
 
     return '';
   }
@@ -202,7 +215,11 @@ export class BlogMarkdownParser {
 
     const valueOffset = this.getNearestBreakIndex(cursor, request);
 
-    const value = this.readString(cursor, request, valueOffset);
+    const value = this.subParse(
+      this.readString(cursor, request, valueOffset),
+      'header'
+    );
+    console.log('header:', value);
 
     return format.headerFormatter.format(format, value, headerType);
   }
@@ -210,15 +227,23 @@ export class BlogMarkdownParser {
 
   private readBacktick(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
 
-    const sharps = this.readWhileMatch(cursor, request, SharpsPattern);
+    this.readChar(cursor, request);
 
-    const headerType = `h${sharps.length}`;
+    let nextChar = this.peekChar(cursor, request);
 
-    const valueOffset = this.getNearestBreakIndex(cursor, request);
+    if (nextChar === '`') {
+      nextChar = this.readChar(cursor, request);
+      nextChar = this.peekChar(cursor, request);
+      if (nextChar === '`') {
+        nextChar = this.readChar(cursor, request);
 
-    const value = cursor.source.substr(cursor.current, valueOffset);
+      }
 
-    return format.headerFormatter.format(format, value, headerType);
+    } else {
+      const code = this.readPairComponents(cursor, request, '`', true);
+
+      return format.codeFormatter.format(format, code, 'inline');
+    }
   }
 
 
