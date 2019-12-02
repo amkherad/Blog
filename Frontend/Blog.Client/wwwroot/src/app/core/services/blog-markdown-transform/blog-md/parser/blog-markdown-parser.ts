@@ -68,7 +68,7 @@ export class BlogMarkdownParser {
   }
 
   isEof(cursor: Cursor): boolean {
-    return cursor.current >= cursor.highestIndex;
+    return cursor.current > cursor.highestIndex;
   }
 
   peekChar(cursor: Cursor, request: TokenRequest): string {
@@ -125,6 +125,15 @@ export class BlogMarkdownParser {
 
 
   readString(cursor: Cursor, request: TokenRequest, length: number) : string {
+
+    if (length < 0) {
+      throw new Error('Negative length passed to readString().');
+    }
+
+    if (length === 0) {
+      return '';
+    }
+
     const result = cursor.source.substr(cursor.current, length);
 
     cursor.current += length;
@@ -136,8 +145,12 @@ export class BlogMarkdownParser {
   getNearestBreakIndex(cursor: Cursor, request: TokenRequest): number {
 
     let offset = 0;
-    let readLimit = cursor.length - cursor.current;
+    const readLimit = cursor.length - cursor.current;
     const current = cursor.current;
+
+    if (offset + 1 >= readLimit) {
+      return current;
+    }
 
     for(;;) {
       const index = current + offset;
@@ -156,9 +169,7 @@ export class BlogMarkdownParser {
       offset ++;
     }
 
-    console.log('offset|source|sourceLnegth', offset, cursor.source, cursor.highestIndex);
-
-    return offset;
+    return current + offset;
   }
 
 
@@ -200,6 +211,21 @@ export class BlogMarkdownParser {
 
   private readPairComponents(cursor: Cursor, request: TokenRequest, pairChar: string, breakOnNewLine: boolean): string {
 
+    const char = this.readChar(cursor, request);
+
+    if (pairChar !== char) {
+      this.UnexpectedSyntax(cursor);
+      return;
+    }
+
+    let offset = 0;
+    let current = cursor.current;
+    let readLimit = cursor.length - cursor.current;
+
+    while (current < readLimit) {
+
+    }
+
     return '';
   }
 
@@ -216,10 +242,9 @@ export class BlogMarkdownParser {
     const valueOffset = this.getNearestBreakIndex(cursor, request);
 
     const value = this.subParse(
-      this.readString(cursor, request, valueOffset),
+      this.readString(cursor, request, valueOffset - cursor.current),
       'header'
     );
-    console.log('header:', value);
 
     return format.headerFormatter.format(format, value, headerType);
   }
