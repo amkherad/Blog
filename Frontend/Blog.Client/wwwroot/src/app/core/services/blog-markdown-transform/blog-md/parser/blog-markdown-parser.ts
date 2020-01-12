@@ -1,6 +1,7 @@
 import {FormatParameters} from "core/services/blog-markdown-transform/blog-md/parser/format-parameters";
 import {HeaderFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/header-formatter";
 import {CodeFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/code-formatter";
+import {LineFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/line-formatter";
 
 type Cursor = {
   source: string;
@@ -19,6 +20,8 @@ type TokenRequest = {
 const StringPattern: RegExp = new RegExp("^(\"|\')(?:\\\\\\1|[^\\1])*?\\1");
 const IdentifierPattern: RegExp = new RegExp("^\\w+");
 const SharpsPattern: RegExp = new RegExp("^#+");
+const DashPattern: RegExp = new RegExp("-(-)+");
+const EquationLinePattern: RegExp = new RegExp("=(=)+");
 
 
 export class BlogMarkdownParser {
@@ -30,6 +33,7 @@ export class BlogMarkdownParser {
 
       headerFormatter: new HeaderFormatter(),
       codeFormatter: new CodeFormatter(),
+      lineFormatter: new LineFormatter(),
 
     } as FormatParameters;
   }
@@ -71,12 +75,16 @@ export class BlogMarkdownParser {
     return cursor.current > cursor.highestIndex;
   }
 
-  peekChar(cursor: Cursor, request: TokenRequest): string {
+  peekChar(cursor: Cursor, request: TokenRequest, skip?: number): string {
     if (this.isEof(cursor)) {
       throw new this.EndOfFile(cursor);
     }
 
-    return cursor.source.charAt(cursor.current);
+    if (typeof skip === 'undefined') {
+      return cursor.source.charAt(cursor.current);
+    } else {
+      return cursor.source.charAt(cursor.current + skip);
+    }
   }
 
   readChar(cursor: Cursor, request: TokenRequest): string {
@@ -189,10 +197,14 @@ export class BlogMarkdownParser {
           yield this.readBacktick(cursor, request, format);
           break;
         }
-        // case '-': {
-        //   yield this.readList(cursor, request, format);
-        //   break;
-        // }
+        case '-': {
+          yield this.readUnderline(cursor, request, format);
+          break;
+        }
+        case '=': {
+          yield this.readEqualUnderline(cursor, request, format);
+          break;
+        }
         // case '`': {
         //   yield this.readBacktick(cursor, request, format);
         //   break;
@@ -218,15 +230,21 @@ export class BlogMarkdownParser {
       return;
     }
 
-    let offset = 0;
-    let current = cursor.current;
-    let readLimit = cursor.length - cursor.current;
+    const current = cursor.current;
+    let offset = current;
+    let readLimit = cursor.length;
 
-    while (current < readLimit) {
+    while (offset < readLimit) {
+      const cChar = this.readChar(cursor, request);
 
+      if (cChar === pairChar) {
+        return cursor.source.substr(current, offset - current);
+      }
+
+      offset++;
     }
 
-    return '';
+    return cursor.source.substring(current);
   }
 
   private readHeader(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
@@ -252,25 +270,75 @@ export class BlogMarkdownParser {
 
   private readBacktick(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
 
-    this.readChar(cursor, request);
-
     let nextChar = this.peekChar(cursor, request);
+
+    if (nextChar !== '`') {
+      return nextChar;
+    }
+
+    nextChar = this.peekChar(cursor, request, 1);
 
     if (nextChar === '`') {
       nextChar = this.readChar(cursor, request);
       nextChar = this.peekChar(cursor, request);
       if (nextChar === '`') {
         nextChar = this.readChar(cursor, request);
+        nextChar = this.peekChar(cursor, request);
 
+        if (nextChar !== '`') {
+          return '';
+        }
+
+        nextChar = this.readChar(cursor, request);
       }
+
+      return this.readWhileMatch(cursor, request, /^```/);
 
     } else {
       const code = this.readPairComponents(cursor, request, '`', true);
 
-      return format.codeFormatter.format(format, code, 'inline');
+      return format.codeFormatter.format(format, code, '@inline');
     }
   }
 
+
+  private readUnderline(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
+
+    let nextChar = this.peekChar(cursor, request);
+
+    if (nextChar !== '-') {
+      return nextChar;
+    }
+
+    nextChar = this.peekChar(cursor, request, 1);
+
+    if (nextChar !== '-') {
+      return nextChar;
+    }
+
+    const characters = this.readWhileMatch(cursor, request, DashPattern);
+
+    return format.lineFormatter.format(format, characters.length.toString(), 'hr');
+  }
+
+  private readEqualUnderline(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
+
+    let nextChar = this.peekChar(cursor, request);
+
+    if (nextChar !== '=') {
+      return nextChar;
+    }
+
+    nextChar = this.peekChar(cursor, request, 1);
+
+    if (nextChar !== '=') {
+      return nextChar;
+    }
+
+    const characters = this.readWhileMatch(cursor, request, EquationLinePattern);
+
+    return format.lineFormatter.format(format, characters.length.toString(), 'hr');
+  }
 
   private readList(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
 
