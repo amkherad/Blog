@@ -2,6 +2,8 @@ import {FormatParameters} from "core/services/blog-markdown-transform/blog-md/pa
 import {HeaderFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/header-formatter";
 import {CodeFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/code-formatter";
 import {LineFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/line-formatter";
+import {NewLineFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/new-line-formatter";
+import {ListFormatter} from "core/services/blog-markdown-transform/blog-md/formatters/list-formatter";
 
 type Cursor = {
   source: string;
@@ -22,6 +24,7 @@ const IdentifierPattern: RegExp = new RegExp("^\\w+");
 const SharpsPattern: RegExp = new RegExp("^#+");
 const DashPattern: RegExp = new RegExp("-(-)+");
 const EquationLinePattern: RegExp = new RegExp("=(=)+");
+const SpacePattern: RegExp = new RegExp(" *");
 
 
 export class BlogMarkdownParser {
@@ -34,6 +37,8 @@ export class BlogMarkdownParser {
       headerFormatter: new HeaderFormatter(),
       codeFormatter: new CodeFormatter(),
       lineFormatter: new LineFormatter(),
+      newLineFormatter: new NewLineFormatter(),
+      listFormatter: new ListFormatter(),
 
     } as FormatParameters;
   }
@@ -66,7 +71,7 @@ export class BlogMarkdownParser {
     return output;
   }
 
-  private subParse(str: string, parent: string) : string {
+  private subParse(str: string, parent: string): string {
 
     return this.transform(str);
   }
@@ -87,14 +92,21 @@ export class BlogMarkdownParser {
     }
   }
 
-  readChar(cursor: Cursor, request: TokenRequest): string {
+  readChar(cursor: Cursor, request: TokenRequest, skip?: number): string {
     if (this.isEof(cursor)) {
       throw new this.EndOfFile(cursor);
     }
 
-    const result = cursor.source[cursor.current];
-    cursor.current++;
-    return result;
+    if (typeof skip === 'undefined') {
+      const result = cursor.source[cursor.current];
+      cursor.current++;
+      return result;
+    } else {
+      cursor.current += skip;
+      const result = cursor.source[cursor.current];
+      cursor.current++;
+      return result;
+    }
   }
 
   whileMatchLength(cursor: Cursor, request: TokenRequest, regex: RegExp): number {
@@ -116,9 +128,7 @@ export class BlogMarkdownParser {
       return undefined;
     }
 
-    const result = cursor.source.substr(cursor.current, matchLength);
-    cursor.current += matchLength;
-    return result;
+    return this.readString(cursor, request, matchLength);
   }
 
   peekWhileMatch(cursor: Cursor, request: TokenRequest, regex: RegExp): string | undefined {
@@ -132,7 +142,7 @@ export class BlogMarkdownParser {
   }
 
 
-  readString(cursor: Cursor, request: TokenRequest, length: number) : string {
+  readString(cursor: Cursor, request: TokenRequest, length: number): string {
 
     if (length < 0) {
       throw new Error('Negative length passed to readString().');
@@ -150,6 +160,33 @@ export class BlogMarkdownParser {
   }
 
 
+  getNearestNonSpaceTokenIndex(cursor: Cursor, request: TokenRequest): number {
+
+    let offset = 0;
+    const readLimit = cursor.length - cursor.current;
+    const current = cursor.current;
+
+    if (offset >= readLimit) {
+      return current;
+    }
+
+    while (offset < readLimit) {
+      const index = current + offset;
+
+      if (cursor.source[index] !== "\t" &&
+        cursor.source[index] !== ' ' &&
+        cursor.source[index] !== "\n" &&
+        cursor.source[index] !== "\r") {
+        break;
+      }
+
+      offset++;
+    }
+
+    return current + offset;
+  }
+
+
   getNearestBreakIndex(cursor: Cursor, request: TokenRequest): number {
 
     let offset = 0;
@@ -160,7 +197,7 @@ export class BlogMarkdownParser {
       return current;
     }
 
-    for(;;) {
+    for (; ;) {
       const index = current + offset;
 
       if (cursor.source[index] == "\n" || cursor.source[index] == "\r") {
@@ -174,7 +211,7 @@ export class BlogMarkdownParser {
         break;
       }
 
-      offset ++;
+      offset++;
     }
 
     return current + offset;
@@ -183,9 +220,9 @@ export class BlogMarkdownParser {
 
   private* parse(cursor: Cursor, request: TokenRequest, format: FormatParameters) {
 
-    let index = cursor.current;
-
     while (!this.isEof(cursor)) {
+      let index = cursor.current;
+
       const char = this.peekChar(cursor, request);
 
       switch (char) {
@@ -203,6 +240,14 @@ export class BlogMarkdownParser {
         }
         case '=': {
           yield this.readEqualUnderline(cursor, request, format);
+          break;
+        }
+        case '*': {
+          yield this.readList(cursor, request, format);
+          break;
+        }
+        case ' ': {
+          yield this.readSpace(cursor, request, format);
           break;
         }
         // case '`': {
@@ -223,28 +268,28 @@ export class BlogMarkdownParser {
 
   private readPairComponents(cursor: Cursor, request: TokenRequest, pairChar: string, breakOnNewLine: boolean): string {
 
-    const char = this.readChar(cursor, request);
+    const nextChar = this.readChar(cursor, request);
 
-    if (pairChar !== char) {
-      this.UnexpectedSyntax(cursor);
-      return;
+    if (pairChar !== nextChar) {
+      return nextChar;
     }
 
-    const current = cursor.current;
-    let offset = current;
-    let readLimit = cursor.length;
+    let offset = 0;
+    let readLimit = cursor.length - cursor.current;
 
     while (offset < readLimit) {
-      const cChar = this.readChar(cursor, request);
+      const nextChar = this.peekChar(cursor, request, offset);
 
-      if (cChar === pairChar) {
-        return cursor.source.substr(current, offset - current);
+      if (nextChar === pairChar) {
+        const string = this.readString(cursor, request, offset);
+        cursor.current++;
+        return string;
       }
 
       offset++;
     }
 
-    return cursor.source.substring(current);
+    return this.readString(cursor, request, offset);
   }
 
   private readHeader(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
@@ -259,10 +304,9 @@ export class BlogMarkdownParser {
 
     const valueOffset = this.getNearestBreakIndex(cursor, request);
 
-    const value = this.subParse(
-      this.readString(cursor, request, valueOffset - cursor.current),
-      'header'
-    );
+    const string = this.readString(cursor, request, valueOffset - cursor.current);
+
+    const value = this.subParse(string, 'header');
 
     return format.headerFormatter.format(format, value, headerType);
   }
@@ -273,6 +317,8 @@ export class BlogMarkdownParser {
     let nextChar = this.peekChar(cursor, request);
 
     if (nextChar !== '`') {
+      nextChar = this.readChar(cursor, request);
+
       return nextChar;
     }
 
@@ -307,6 +353,8 @@ export class BlogMarkdownParser {
     let nextChar = this.peekChar(cursor, request);
 
     if (nextChar !== '-') {
+      nextChar = this.readChar(cursor, request);
+
       return nextChar;
     }
 
@@ -326,6 +374,8 @@ export class BlogMarkdownParser {
     let nextChar = this.peekChar(cursor, request);
 
     if (nextChar !== '=') {
+      nextChar = this.readChar(cursor, request);
+
       return nextChar;
     }
 
@@ -340,17 +390,78 @@ export class BlogMarkdownParser {
     return format.lineFormatter.format(format, characters.length.toString(), 'hr');
   }
 
+  private readSpace(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
+
+    let nextChar = this.readChar(cursor, request);
+
+    if (nextChar !== ' ') {
+      return nextChar;
+    }
+
+    nextChar = this.peekChar(cursor, request);
+
+    if (nextChar !== ' ') {
+      return ' ';
+    }
+
+    const spaces = this.readWhileMatch(cursor, request, SpacePattern);
+
+    nextChar = this.peekChar(cursor, request);
+
+    if (nextChar === "\r" || nextChar === "\n") {
+      nextChar = this.readChar(cursor, request);
+
+      nextChar = this.peekChar(cursor, request);
+
+      if (nextChar === "\r" || nextChar === "\n") {
+        nextChar = this.readChar(cursor, request);
+      }
+
+      return format.newLineFormatter.format(format, ' ', 'br');
+    } else {
+      return '  ' + spaces;
+    }
+  }
+
   private readList(cursor: Cursor, request: TokenRequest, format: FormatParameters): string {
 
-    const sharps = this.readWhileMatch(cursor, request, SharpsPattern);
+    let nextChar = this.readChar(cursor, request);
 
-    const headerType = `h${sharps.length}`;
+    if (nextChar !== '*') {
+      return nextChar;
+    }
 
-    const valueOffset = this.getNearestBreakIndex(cursor, request);
+    const lines: string[] = [];
 
-    const value = cursor.source.substr(cursor.current, valueOffset);
+    while (cursor.current < cursor.highestIndex) {
+      const lineLastChar = this.getNearestBreakIndex(cursor, request);
 
-    return format.headerFormatter.format(format, value, headerType);
+      if (lineLastChar === cursor.current) {
+        break;
+      }
+
+      const line = this.readString(cursor, request, lineLastChar - cursor.current);
+
+      lines.push(line);
+
+      const nextToken = this.getNearestNonSpaceTokenIndex(cursor, request);
+
+      if (nextToken === cursor.current) {
+        break;
+      }
+
+      const nextTokenOffset = nextToken - cursor.current;
+
+      nextChar = this.peekChar(cursor, request, nextTokenOffset);
+
+      if (nextChar !== '*') {
+        break;
+      } else {
+        nextChar = this.readChar(cursor, request, nextTokenOffset);
+      }
+    }
+
+    return format.listFormatter.format(format, '', '', lines);
   }
 
 
