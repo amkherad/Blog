@@ -49,38 +49,25 @@
       <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.scss" />
       <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.spec.ts" />
       <_ContentIncludedByDefault Remove="wwwroot\src\app\modules\blog-post-page\blog-post-page.component.ts" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\karma.conf.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\ng-package.json" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\package.json" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\README.md" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\e2e.ts" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.component.spec.ts" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.component.ts" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.module.ts" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.service.spec.ts" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\lib\test.service.ts" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\src\test.ts" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\tsconfig.lib.json" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\tsconfig.spec.json" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\test\tslint.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\src\api\posts\items\2019-11-18_12-05-00_test\content.md" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="wwwroot\src\api\archives\items" />
-      <Folder Include="wwwroot\src\api\pages\items" />
-      <Folder Include="wwwroot\src\app\core\pipes" />
+      <Folder Include="wwwroot\node_modules\@types" />
       <Folder Include="wwwroot\src\app\core\services\blog-environment" />
-      <Folder Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\codegen" />
-      <Folder Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\parser" />
       <Folder Include="wwwroot\src\app\core\services\content-discovery" />
       <Folder Include="wwwroot\src\app\components\generals" />
+      <Folder Include="wwwroot\src\app\core\services\generals" />
       <Folder Include="wwwroot\src\app\shared\components" />
       <Folder Include="wwwroot\src\app\shared\directives" />
       <Folder Include="wwwroot\src\app\shared\dto\blog" />
-      <Folder Include="wwwroot\src\app\shared\models\blog" />
+      <Folder Include="wwwroot\src\app\shared\pipes" />
       <Folder Include="wwwroot\src\assets\components" />
       <Folder Include="wwwroot\src\assets\themes" />
     </ItemGroup>
     <ItemGroup>
+      <TypeScriptCompile Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\library\pipeline-string-line-reader.ts" />
+      <TypeScriptCompile Include="wwwroot\src\app\core\services\blog-markdown-transform\blog-md\library\transform-pipeline-buffer.ts" />
+      <TypeScriptCompile Include="wwwroot\src\app\core\services\rest-client\irest-client.service.ts" />
       <TypeScriptCompile Include="wwwroot\src\app\shared\models\discovery\discovery-model.ts" />
       <TypeScriptCompile Include="wwwroot\src\app\typings\content-descriptor.ts" />
     </ItemGroup>

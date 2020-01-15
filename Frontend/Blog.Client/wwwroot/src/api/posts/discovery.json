@@ -5,7 +5,7 @@
     "lakjg3lhjb00alk3": {
       "id": "lakjg3lhjb00alk3",
       "loader": {
-        "name": "text/markdown+rich",
+        "name": "text/markdown",
         "arguments": [
           ""
         ]

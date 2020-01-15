@@ -22,7 +22,7 @@
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
-    "redtransport": "file:/usr/amk/Projects/Frameworks/REDTransport/REDTransport.Js/REDTransport.Js.RESTClient/",
+    "redtransport": "file:D:\\Projects\\REDTransport\\REDTransport.Js\\REDTransport.Js.RESTClient",
     "url-join": "latest"
   },
   "devDependencies": {
@@ -48,6 +48,6 @@
     "tsickle": "^0.37.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",
-    "@types/redtransport": "file:/usr/amk/Projects/Frameworks/REDTransport/REDTransport.Js/REDTransport.Js.RESTClient/"
+    "@types/redtransport": "file:D:\\Projects\\REDTransport\\REDTransport.Js\\REDTransport.Js.RESTClient"
   }
 }

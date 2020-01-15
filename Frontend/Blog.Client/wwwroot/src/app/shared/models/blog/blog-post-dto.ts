@@ -1,5 +1,6 @@
 import {DateTime} from "typings/date-time.type";
 import {ContentDescriptor} from "typings/content-descriptor.type";
+import {ContentLoaderDescriptor} from "typings/content-loader-descriptor.type";
 
 export interface BlogPostDto {
 
@@ -10,6 +11,8 @@ export interface BlogPostDto {
   brief?: string;
   author: string;
   createdDateTime: DateTime;
+
+  loader?: ContentLoaderDescriptor;
 
   readMore: boolean;
 

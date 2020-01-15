@@ -44,8 +44,6 @@ export class BlogPostPageComponent implements OnInit {
       text: this.postUrlText
     } as BlogPostUrlParams);
 
-    console.log('post.htmlContent', post.htmlContent);
-
     this.post = post;
     this.postHtmlContent = post.htmlContent;
 
